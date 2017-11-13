@@ -16,6 +16,7 @@ request('https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scrip
 		console.log('tokens.length', tokens.length);
 
 		var q = queue(function(task, callback) {
+			console.log('queue length=',q.length());
 			console.log(task.tokenIndex, '**** Scanning token', task.tokenInfo.symbol,'at',task.tokenAddress);
 			scanToken(task.tokenAddress, task.fromBlock, task.toBlock).then(() => {
 				callback();
@@ -34,7 +35,7 @@ request('https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scrip
 					let fromBlock = 0;
 
 					if (err) {
-						console.log('No startblock found for token ', tokens[i].address);
+						//console.log('No startblock found for token ', tokens[i].address);
 					} else {
 						fromBlock = parseInt(value);
 					}
@@ -106,7 +107,7 @@ function scanToken(tokenaddress, fromBlock, toBlock) {
 							type: 'put'
 						});
 
-						console.log('batch=', r);
+						//console.log('batch=', r);
 						console.log('token', tokenContract._address, 'lastblock=', toBlock);
 
 						db.batch(r, () => {
@@ -138,7 +139,7 @@ var tokenhodlers = {};
 
 function scanrange(tokenContract, startBlock, endBlock, retries) {
 	return new Promise((resolve, reject) => {
-		console.log(tokenContract.address,'scanning between',startBlock,'=>',endBlock);	
+		//console.log(tokenContract._address,'scanning between',startBlock,'=>',endBlock);	
 		scanrange_(tokenContract, startBlock, endBlock, retries)
 			.then(() => {
 				resolve();

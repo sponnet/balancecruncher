@@ -11,17 +11,15 @@ request('https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scrip
 
 		let tokens = JSON.parse(body);
 
-
-		// todoList Routes
 		app.route('/balances/:address')
-			.get(list_all_tasks);
+			.get(queryBalances);
 
 		app.listen(port);
 
 		console.log('Balance API server started on: ' + port);
 
 
-		function list_all_tasks(req, res) {
+		function queryBalances(req, res) {
 			var startTime = Date.now();
 
 			let promisesList = [];
@@ -41,7 +39,9 @@ request('https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scrip
 
 						resolve({
 							token: tokens[i].address,
-							balance: value
+							symbol: tokens[i].symbol,
+							decimal: tokens[i].decimal,
+							balance: value,
 						});
 					})
 				}));
@@ -57,8 +57,6 @@ request('https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scrip
 						return a;
 					}
 				}, []);
-
-
 
 				res.json({
 					duration: Date.now() - startTime,
